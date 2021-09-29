@@ -54,7 +54,8 @@ proc execSubCreate(k: var Vm2Ctx; childMsg: Message;
     if child.isSuccess:
       c.merge(child)
       c.stack.top child.msg.contractAddress
-    else:
+    elif not child.error.burnsGas: # OP REVERT EXECUTED
+      # set returnData if last child's opcode is REVERT
       c.returnData = child.output
 
 # ------------------------------------------------------------------------------

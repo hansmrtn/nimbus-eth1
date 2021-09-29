@@ -695,7 +695,10 @@ template genCreate(callName: untyped, opCode: Op): untyped =
       )
 
       c.chainTo(msg):
-        c.returnData = @(makeOpenArray(c.res.outputData, c.res.outputSize.int))
+        if c.res.status_code == EVMC_REVERT:
+          # set returnData if last child's opcode is REVERT
+          c.returnData = @(makeOpenArray(c.res.outputData, c.res.outputSize.int))
+          
         c.gasMeter.returnGas(c.res.gas_left)
 
         if c.res.status_code == EVMC_SUCCESS:
@@ -721,7 +724,8 @@ template genCreate(callName: untyped, opCode: Op): untyped =
         if child.isSuccess:
           c.merge(child)
           c.stack.top child.msg.contractAddress
-        else:
+        elif not child.error.burnsGas: # OP REVERT EXECUTED
+          # set returnData if last child's opcode is REVERT
           c.returnData = child.output
 
 genCreate(create, Create)
