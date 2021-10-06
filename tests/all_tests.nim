@@ -40,4 +40,5 @@ cliBuilder:
           ./test_clique,
           ./test_configuration,
           ./test_keequ,
-          ./test_slst
+          ./test_slst,
+          ./test_txpool
