@@ -38,4 +38,6 @@ cliBuilder:
           ./test_graphql,
           ./test_lru_cache,
           ./test_clique,
-          ./test_configuration
+          ./test_configuration,
+          ./test_keequ,
+          ./test_slst
